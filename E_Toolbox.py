@@ -388,19 +388,25 @@ def ohm():
 
     def calc():
 
+        evolt_r = float(evolt.get())
+        eampere_r = float(eampere.get())
+        eresistor_r = float(eresistor.get())
+        epower_r = float(epower.get())
+
         if valor.get() == 1: #volt
+            #evolt.delete(0,END) 
             # v = Squareroot(p*r)
             if int(epower.get())>0 and int(eresistor.get())>0:
-                evolt_r = math.sqrt(float(epower.get())*float(eresistor.get()))
+                evolt_r = math.sqrt(epower_r*eresistor_r)
                 messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
             # v = p / i
             elif int(epower.get())>0 and int(eampere.get())>0:
-                evolt_r = epower/eampere
-                messagebox.showinfo("Volt: " + evolt_r + " V")
+                evolt_r = epower_r/eampere_r
+                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
             # v = i * r
             elif int(eampere.get())>0 and int(eresistor.get())>0:
-                evolt_r = eampere*eresistor
-                messagebox.showinfo("Volt: " + evolt_r + " V")
+                evolt_r = eampere_r*eresistor_r
+                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
             #else:
                 #return ""
             
@@ -408,43 +414,50 @@ def ohm():
         elif valor.get() == 2: #current
             # i = v / r
             if int(evolt.get())>0 and int(eresistor.get())>0:
-                eampere_r =evolt/eresistor
+                eampere_r =evolt_r/eresistor_r
+                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
             # i = p / v
             elif int(epower.get())>0 and int(evolt.get())>0:
-                eampere_r =epower/evolt
+                eampere_r =epower_r/evolt_r
+                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
             # i = Squareroot (p / r)
             elif int(epower.get())>0 and int(eresistor.get())>0:
-                eampere_r =math.sqrt(epower/eresistor)
+                eampere_r =math.sqrt(epower_r/eresistor_r)
+                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
             #else:
                 #return ""
 
     
         elif valor.get() == 3: #power
             # p = v * i
-            if evolt>0 and eampere>0:
-                epower_r =evolt*eampere
+            if int(evolt.get())>0 and int(eampere.get())>0:
+                epower_r =evolt_r*eampere_r
+                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
             # p = i² * r
             elif eampere>0 and eresistor>0:
-                epower_r =math.pow(eampere, 2)*eresistor
+                epower_r =math.pow(eampere_r, 2)*eresistor_r
+                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
             # p = v²/r
             elif evolt>0 and eresistor>0:
-                epower_r =math.pow(evolt, 2)/eresistor
+                epower_r =math.pow(evolt_r, 2)/eresistor_r
+                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
             #else:
                 #return ""
 
    
         elif valor.get() == 4: #resistor
             # r = v / i
-            if evolt>0 and eampere>0:
-                eresistor_r =evolt/eampere
-           
+            if int(evolt.get())>0 and int(eampere.get())>0:
+                eresistor_r =evolt_r/eampere_r
+                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
             # r = v² / p
             elif evolt>0 and epower>0:
-                eresistor_r = math.pow(evolt, 2)/epower
-        
+                eresistor_r = math.pow(evolt_r, 2)/epower_r
+                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
             # r = p / i²
             elif epower>0 and eampere>0:
-                eresistor_r = epower/math.pow(eampere, 2)
+                eresistor_r = epower_r/math.pow(eampere_r, 2)
+                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
             #else:
                 #return ""
 
@@ -460,9 +473,13 @@ def ohm():
         eampere.delete(0,END)
 
     evolt = Entry(janela, width=10)
+    evolt.insert(0,0)
     eampere = Entry(janela, width=10)
+    eampere.insert(0,0)
     eresistor= Entry(janela, width=10)
+    eresistor.insert(0,0)
     epower = Entry(janela, width=10)
+    epower.insert(0,0)
     lvolt= Label(janela, width=8, text="V", textvariable=evolt)
     lampere= Label(janela, width=8, text="A", textvariable=eampere)
     lresistor= Label(janela, width=8, text="Ω", textvariable=eresistor)
@@ -487,10 +504,10 @@ def ohm():
     r2 = Radiobutton(janela, text="Current",
                      value = 2, variable=valor)
 
-    r3 = Radiobutton(janela, text="Resistor",
+    r3 = Radiobutton(janela, text="Power",
                      value = 3, variable=valor)
 
-    r4 = Radiobutton(janela, text="Power",
+    r4 = Radiobutton(janela, text="Resistor",
                      value = 4, variable=valor)
 
     r1.place(x=580, y=70)
