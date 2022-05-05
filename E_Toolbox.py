@@ -92,6 +92,8 @@ def loginpage():
     def on_closing():
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             janela.destroy()
+        else:
+            loginpage()
 
     attemptlogin = tkinter.Button(root, text="Login", command=trylogin)
     
@@ -384,15 +386,13 @@ def ohm():
 
     #global evolt_r,eampere_r,eresistor_r,epower_r
 
-    
-
     def calc():
 
         if valor.get() == 1: #volt
             # v = Squareroot(p*r)
             if int(epower.get())>0 and int(eresistor.get())>0:
-                evolt_r = math.sqrt(epower*eresistor)
-                messagebox.showinfo("Volt: " + evolt_r + " V")
+                evolt_r = math.sqrt(float(epower.get())*float(eresistor.get()))
+                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
             # v = p / i
             elif int(epower.get())>0 and int(eampere.get())>0:
                 evolt_r = epower/eampere
@@ -459,14 +459,14 @@ def ohm():
         epower.delete(0,END)
         eampere.delete(0,END)
 
-    evolt = Entry(janela, textvariable=evolt_r, width=10)
-    eampere = Entry(janela, textvariable=eampere_r, width=10)
-    eresistor= Entry(janela,textvariable=eresistor_r, width=10)
-    epower = Entry(janela,textvariable=epower_r, width=10)
-    lvolt= Label(janela, width=9, text="V", textvariable=evolt)
-    lampere= Label(janela, width=9, text="A", textvariable=eampere)
-    lresistor= Label(janela, width=9, text="Ω", textvariable=eresistor)
-    lpower= Label(janela, width=9, text="P", textvariable=epower)
+    evolt = Entry(janela, width=10)
+    eampere = Entry(janela, width=10)
+    eresistor= Entry(janela, width=10)
+    epower = Entry(janela, width=10)
+    lvolt= Label(janela, width=8, text="V", textvariable=evolt)
+    lampere= Label(janela, width=8, text="A", textvariable=eampere)
+    lresistor= Label(janela, width=8, text="Ω", textvariable=eresistor)
+    lpower= Label(janela, width=8, text="P", textvariable=epower)
 
 
 
@@ -493,8 +493,8 @@ def ohm():
     r4 = Radiobutton(janela, text="Power",
                      value = 4, variable=valor)
 
-    r1.place(x=585, y=70)
-    r2.place(x=245, y=380)
+    r1.place(x=580, y=70)
+    r2.place(x=240, y=380)
     r3.place(x=570, y=380)
     r4.place(x=245, y=70)
 
@@ -610,7 +610,7 @@ def List_CSV():
 
     var = StringVar(value = list_of_entries)
     listbox1 = Listbox(janela, listvariable = var)
-    listbox1.place(x=100,y=100)
+    listbox1.place(x=105,y=100)
     
     def clean(): #delete all positions
         edescription.delete(0,END) 
@@ -691,7 +691,7 @@ def List_CSV():
 
     deslabel = Label(janela, text="Description:")
     deslabel.place(x=100,y=300)
-    pricelabel = Label(janela, text="Price:")
+    pricelabel = Label(janela, text="Price (€):")
     pricelabel.place(x=100,y=320)
     manlabel = Label(janela, text="Manufacturer:")
     manlabel.place(x=100,y=340)
