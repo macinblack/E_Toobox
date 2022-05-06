@@ -9,7 +9,7 @@ import tkinter
 import time
 import csv
 
-''' Dependências necessárias
+''' install pip and matplotlib
 pip install -U pip
 pip install -U matplotlib
 '''
@@ -105,7 +105,6 @@ def loginpage():
     root.protocol("WM_DELETE_WINDOW", on_closing)
 ##################################################################
 
-
 #Configure Tkinter Window
 ##################################################################
 janela=Tk()
@@ -114,7 +113,6 @@ janela.configure(bg='#262626')
 janela.resizable(False,False)
 janela.title('Electronic Tools V0.1') #title
 janela.iconbitmap('power.ico') #photo 48x48px
-
 
 ##################################################################
 
@@ -125,10 +123,7 @@ l3=Label(janela,text='Electronic Tools',fg='white',bg='#262626')
 l3.config(font=('Comic Sans MS',50))
 l3.place(x=200, y=170)
 
-
-
 global k
-
 
 def kill_objects():#kill objects 
     print("destroy: ", k)
@@ -173,6 +168,7 @@ def kill_objects():#kill objects
         r4.destroy()
         bcalc.destroy()
         bclean.destroy()
+        note.destroy()
 
     elif k==4:#kill objects e-listbox
         print("destroy list objects")
@@ -198,6 +194,7 @@ def kill_objects():#kill objects
         pricelabel2.destroy()
         manlabel2.destroy()
         mpnlabel2.destroy()
+        
 
         
 def capacitor():
@@ -219,7 +216,7 @@ def capacitor():
         print(C)
         
         tau=R*C
-        tau_linha=int(5*tau)+tau
+        tau_linha=float(5*tau)
         t=np.linspace(0, tau_linha, 1000)
         dt=0.01
 
@@ -244,7 +241,7 @@ def capacitor():
         print(C)
         
         tau=R*C
-        tau_linha=int(5*tau)+tau
+        tau_linha=float(5*tau)
         t=np.linspace(0, tau_linha, 1000)
         dt=0.01
 
@@ -308,7 +305,7 @@ def inductor():
         print(C)
         
         tau=R/C
-        tau_linha=int(5*tau)+tau
+        tau_linha=int(5*tau)
         t=np.linspace(0, tau_linha, 1000)
         dt=0.01
 
@@ -332,7 +329,7 @@ def inductor():
         print(C)
         
         tau=R/C
-        tau_linha=int(5*tau)+tau
+        tau_linha=float(5*tau)
         t=np.linspace(0, tau_linha, 1000)
         dt=0.01
 
@@ -367,7 +364,7 @@ def inductor():
 
     bplot_charge = Button(janela,text="Plot Charge",command=plot_c,bd=5,width=10)
     bplot_discharge =Button(janela,text="Plot Discharge",command=plot_d,bd=5,width=10)
-    bclean =Button(janela,text="Clean all",bd=5,width=10)
+    bclean =Button(janela,text="Clean all",command=clean,bd=5,width=10)
     bplot_charge.place(x=230, y=390)
     bplot_discharge.place(x=585, y=390)
     bclean.place(x=420, y=450)
@@ -375,7 +372,7 @@ def inductor():
     #toggle_menu()
 
 def ohm():
-    global evolt,eampere,eresistor,epower,lvolt,lampere,lresistor,lpower, r1,r2,r3,r4,bcalc,bclean,k
+    global evolt,eampere,eresistor,epower,lvolt,lampere,lresistor,lpower, r1,r2,r3,r4,bcalc,bclean,k, note
     
     f1.destroy()
     l3.destroy()
@@ -396,70 +393,72 @@ def ohm():
         if valor.get() == 1: #volt
             #evolt.delete(0,END) 
             # v = Squareroot(p*r)
-            if int(epower.get())>0 and int(eresistor.get())>0:
+            if float(epower.get())>0 and float(eresistor.get())>0:
                 evolt_r = math.sqrt(epower_r*eresistor_r)
-                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
+                messagebox.showinfo("Result", "Voltage: " + "%.2f" %evolt_r + " V")
             # v = p / i
-            elif int(epower.get())>0 and int(eampere.get())>0:
+            elif float(epower.get())>0 and float(eampere.get())>0:
                 evolt_r = epower_r/eampere_r
-                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
+                messagebox.showinfo("Result", "Voltage: " + "%.2f" %evolt_r + " V")
             # v = i * r
-            elif int(eampere.get())>0 and int(eresistor.get())>0:
+            elif float(eampere.get())>0 and float(eresistor.get())>0:
                 evolt_r = eampere_r*eresistor_r
-                messagebox.showinfo("Result", "Volt: " + str(evolt_r) + " V")
-            #else:
-                #return ""
+                messagebox.showinfo("Result", "Voltage: " + "%.2f" %evolt_r + " V")
+            else:
+                messagebox.showinfo("Error", "Entered values ​​are not valid!")
             
 
         elif valor.get() == 2: #current
             # i = v / r
-            if int(evolt.get())>0 and int(eresistor.get())>0:
+            if float(evolt.get())>0 and float(eresistor.get())>0:
                 eampere_r =evolt_r/eresistor_r
-                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
+                messagebox.showinfo("Result", "Current: " + "%.2f" %eampere_r + " A")
             # i = p / v
-            elif int(epower.get())>0 and int(evolt.get())>0:
+            elif float(epower.get())>0 and float(evolt.get())>0:
                 eampere_r =epower_r/evolt_r
-                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
+                messagebox.showinfo("Result", "Current: " + "%.2f" %eampere_r + " A")
             # i = Squareroot (p / r)
-            elif int(epower.get())>0 and int(eresistor.get())>0:
+            elif float(epower.get())>0 and float(eresistor.get())>0:
                 eampere_r =math.sqrt(epower_r/eresistor_r)
-                messagebox.showinfo("Result", "Current: " + str(eampere_r) + " A")
-            #else:
-                #return ""
+                messagebox.showinfo("Result", "Current: " + "%.2f" %eampere_r + " A")
+            else:
+                messagebox.showinfo("Error", "Entered values ​​are not valid!")
 
     
         elif valor.get() == 3: #power
             # p = v * i
-            if int(evolt.get())>0 and int(eampere.get())>0:
+            if float(evolt.get())>0 and float(eampere.get())>0:
                 epower_r =evolt_r*eampere_r
-                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
+                messagebox.showinfo("Result", "Power: " + "%.2f" %epower_r + " W")
             # p = i² * r
-            elif eampere>0 and eresistor>0:
+            elif float(eampere.get())>0 and float(eresistor.get())>0:
                 epower_r =math.pow(eampere_r, 2)*eresistor_r
-                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
+                messagebox.showinfo("Result", "Power: " + "%.2f" %epower_r + " W")
             # p = v²/r
-            elif evolt>0 and eresistor>0:
+            elif float(evolt.get())>0 and float(eresistor.get())>0:
                 epower_r =math.pow(evolt_r, 2)/eresistor_r
-                messagebox.showinfo("Result", "Power: " + str(epower_r) + " W")
-            #else:
-                #return ""
+                messagebox.showinfo("Result", "Power: " + "%.2f" %epower_r + " W")
+            else:
+                messagebox.showinfo("Error", "Entered values ​​are not valid!")
 
    
         elif valor.get() == 4: #resistor
             # r = v / i
-            if int(evolt.get())>0 and int(eampere.get())>0:
+            if float(evolt.get())>0 and float(eampere.get())>0:
                 eresistor_r =evolt_r/eampere_r
-                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
+                messagebox.showinfo("Result", "Resistance: " + "%.2f" %eresistor_r + " Ω")
             # r = v² / p
-            elif evolt>0 and epower>0:
+            elif float(evolt.get())>0 and float(epower.get())>0:
                 eresistor_r = math.pow(evolt_r, 2)/epower_r
-                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
+                messagebox.showinfo("Result", "Resistance: " + "%.2f" %eresistor_r + " Ω")
             # r = p / i²
-            elif epower>0 and eampere>0:
+            elif float(epower.get())>0 and float(eampere.get())>0:
                 eresistor_r = epower_r/math.pow(eampere_r, 2)
-                messagebox.showinfo("Result", "Resistor: " + str(eresistor_r) + " Ω")
-            #else:
-                #return ""
+                messagebox.showinfo("Result", "Resistance: " + "%.2f" %eresistor_r + " Ω")
+            else:
+                messagebox.showinfo("Error", "Entered values ​​are not valid!")
+        else:
+            messagebox.showinfo("Error", "Entered values ​​are not valid!")
 
     evolt_r = 0.0
     eampere_r = 0.0
@@ -468,9 +467,13 @@ def ohm():
 
     def clean():
         evolt.delete(0,END) 
-        eresistor.delete(0,END)
-        epower.delete(0,END)
-        eampere.delete(0,END)
+        evolt.insert(0,0)
+        eampere.delete(0,END) 
+        eampere.insert(0,0)
+        eresistor.delete(0,END) 
+        eresistor.insert(0,0)
+        epower.delete(0,END) 
+        epower.insert(0,0)
 
     evolt = Entry(janela, width=10)
     evolt.insert(0,0)
@@ -484,6 +487,7 @@ def ohm():
     lampere= Label(janela, width=8, text="A", textvariable=eampere)
     lresistor= Label(janela, width=8, text="Ω", textvariable=eresistor)
     lpower= Label(janela, width=8, text="P", textvariable=epower)
+    note = Label(janela, width=40,text="Note: Only fill in 2 fields and keep the rest at 0", bg="yellow")
 
 
 
@@ -491,7 +495,7 @@ def ohm():
     lampere.place(x=245, y=425)
     lresistor.place(x=570, y=425)
     lpower.place(x=245,y=115)
-    
+    note.place(x=305,y=45)
     evolt.place(x=570, y=95)
     eampere.place(x=245, y=405)
     eresistor.place(x=570, y=405)
@@ -512,8 +516,8 @@ def ohm():
 
     r1.place(x=580, y=70)
     r2.place(x=240, y=380)
-    r3.place(x=570, y=380)
-    r4.place(x=245, y=70)
+    r3.place(x=245, y=70)
+    r4.place(x=570, y=380)
 
     bcalc =Button(janela,text="Calc",command=calc,bd=5,width=10)
     bclean =Button(janela,text="Clean all", command=clean, bd=5,width=10)
@@ -610,7 +614,7 @@ def List_CSV():
     global deslabel,deslabel2,pricelabel,manlabel,mpnlabel,pricelabel2,manlabel2,mpnlabel2
     f1.destroy()
     l3.destroy()
-    e.change_image('background.png') #change background
+    e.change_image('background_l.png') #change background
     
     kill_objects()
     k=4    
@@ -706,6 +710,7 @@ def List_CSV():
     bExport.place(x=650, y=200)
     bupdate.place(x=125, y=268)
 
+    
     deslabel = Label(janela, text="Description:")
     deslabel.place(x=100,y=300)
     pricelabel = Label(janela, text="Price (€):")
